@@ -16,10 +16,11 @@ import java.time.LocalDateTime;
 @Table(name="notification_user")
 public class NotificationUser {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     @ManyToOne
     @JoinColumn(name = "notification_id")
     private Notification notification;
-    @Id
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

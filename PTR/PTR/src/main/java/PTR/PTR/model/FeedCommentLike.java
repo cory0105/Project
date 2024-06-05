@@ -14,10 +14,11 @@ import lombok.Setter;
 @Table(name="feed_comment_like")
 public class FeedCommentLike {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     @ManyToOne
     @JoinColumn(name = "feed_comment_id")
     private FeedComment feedComment;
-    @Id
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

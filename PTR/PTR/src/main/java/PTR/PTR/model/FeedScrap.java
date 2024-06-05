@@ -16,10 +16,11 @@ import java.time.LocalDateTime;
 @Table(name="feed_scrap")
 public class FeedScrap {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @Id
     @ManyToOne
     @JoinColumn(name = "feed_id")
     private Feed feed;

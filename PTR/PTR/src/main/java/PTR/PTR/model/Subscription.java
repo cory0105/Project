@@ -16,10 +16,11 @@ import java.time.LocalDateTime;
 @Table(name="subscription")
 public class Subscription {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @Id
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;

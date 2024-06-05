@@ -14,6 +14,8 @@ import lombok.Setter;
 @Table(name="calendar_diet_record")
 public class CalendarDietRecord {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     @ManyToOne
     @JoinColumn(name = "calendar_id")
     private Calendar calendar;
