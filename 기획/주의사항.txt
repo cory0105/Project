@@ -1,0 +1,5 @@
+@PreAuthorize("hasAnyRole('ADMIN','USER')")
+
+admin의 grantTeacher 메서드는 text형식으로
+
+

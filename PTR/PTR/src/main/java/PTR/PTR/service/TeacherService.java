@@ -1,5 +1,6 @@
 package PTR.PTR.service;
 
+import PTR.PTR.model.Teacher;
 import PTR.PTR.repository.TeacherRepository;
 import org.springframework.stereotype.Service;
 
@@ -9,5 +10,9 @@ public class TeacherService {
 
     public TeacherService(TeacherRepository teacherRepository) {
         this.teacherRepository = teacherRepository;
+    }
+
+    public Teacher changeTeacher(Teacher teacher){
+        return teacherRepository.save(teacher);
     }
 }
