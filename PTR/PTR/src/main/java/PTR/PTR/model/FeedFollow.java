@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
-@Table(name="notice")
+@Table(name="feed_follow")
 public class FeedFollow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
