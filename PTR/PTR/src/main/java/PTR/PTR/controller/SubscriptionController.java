@@ -35,4 +35,6 @@ public class SubscriptionController {
     public ResponseEntity<Integer> teacherSubscription(@RequestBody Teacher teacher){
         return new ResponseEntity<>(subscriptionService.teacherSubscription(teacher), HttpStatus.OK);
     }
+
+
 }

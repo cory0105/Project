@@ -29,4 +29,6 @@ public class Feed {
     private User user;
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+    @Column(name = "update_time")
+    private LocalDateTime updateTime;
 }

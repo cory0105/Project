@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
-@Table(name="message")
-public class Message {
+@Table(name="lecture_scrap")
+public class LectureScrap {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -22,17 +22,8 @@ public class Message {
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne
-    @JoinColumn(name = "user2_id")
-    private User user2;
-    @Column
-    private String text;
-    @Column
-    private String image;
+    @JoinColumn(name = "lecture_id")
+    private Lecture lecture;
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
-
-    @Override
-    public String toString() {
-        return id + user.getUserId() + user2.getUserId() + text + image + createdAt;
-    }
 }

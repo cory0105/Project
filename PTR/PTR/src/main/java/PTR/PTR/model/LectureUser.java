@@ -30,6 +30,4 @@ public class LectureUser {
     private int teacherRating;
     @Column(name = "teacher_review")
     private String teacherReview;
-    @Column(name = "scrap_status")
-    private String scrapStatus;
 }
