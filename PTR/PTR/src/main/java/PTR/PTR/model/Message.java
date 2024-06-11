@@ -28,6 +28,8 @@ public class Message {
     private String text;
     @Column
     private String image;
+    @Column
+    private Status status;
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 

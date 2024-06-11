@@ -3,10 +3,12 @@
 admin의 grantTeacher 메서드는 text형식으로
 Feed 엔티티 수정
 메시지 알람 안 함
-메시지는 더 수정해야 함
 lecture를 만들때 teacher의 user정보도 줘야함
 
 수정
 - LectureUser scrapStatus 삭제
 - ScrapLecture 엔티티 추가
 	(레포지토리, 컨트롤러, 서비스)
+- Message status 추가
+- FeedFollow 이름 수정 UserFollow
+

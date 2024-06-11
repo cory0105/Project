@@ -2,10 +2,12 @@ package PTR.PTR.service;
 
 import PTR.PTR.model.Lecture;
 import PTR.PTR.model.LectureScrap;
+import PTR.PTR.model.User;
 import PTR.PTR.repository.LectureScrapRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class LectureScrapService {
@@ -25,5 +27,7 @@ public class LectureScrapService {
         return "삭제";
     }
     
-    // 나의 스크랩 페이지 만들기
+    public List<LectureScrap> myScrapLecture(User user){
+        return lectureScrapRepository.findByUser(user);
+    }
 }

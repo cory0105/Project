@@ -22,6 +22,7 @@ public class LectureUserService {
 
     public String buyLecture(LectureUser lectureUser){
         lectureUser.setCreatedAt(LocalDateTime.now());
+        lectureUser.setTeacherRating(-1);
         int price = lectureUser.getLecture().getPrice();
         int coin = lectureUser.getUser().getCoin();
         lectureUser.setUser(userRepository.findById(lectureUser.getUser().getUserId()).get());
@@ -39,8 +40,15 @@ public class LectureUserService {
             return "잔액 부족";
         }
     }
-
     public List<LectureUser> myBuyLecture(User user){
         return lectureUserRepository.findByUser(user);
+    }
+
+    public int buyNumber(Lecture lecture){
+        return lectureUserRepository.findByLecture(lecture).size();
+    }
+
+    public LectureUser changeLectureUser(LectureUser lectureUser){
+        return lectureUserRepository.save(lectureUser);
     }
 }

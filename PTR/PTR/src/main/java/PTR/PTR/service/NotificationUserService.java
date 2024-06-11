@@ -33,6 +33,15 @@ public class NotificationUserService {
         }
     }
 
+    public void inquiryReplyNotification(Notification notification, InquiryReply inquiryReply){
+        NotificationUser notificationUser = new NotificationUser();
+        notificationUser.setNotification(notification);
+        notificationUser.setUser(inquiryReply.getInquiry().getUser());
+        notificationUser.setStatus(Status.UNCONFIRMED);
+        notificationUser.setIdentifyAt(LocalDateTime.now());
+        notificationUserRepository.save(notificationUser);
+    }
+
     public List<NotificationUser> myNotification(User user){
         return notificationUserRepository.findByUser(user).reversed();
     }
@@ -51,4 +60,6 @@ public class NotificationUserService {
         notificationUser.setStatus(Status.UNCONFIRMED);
         return notificationUserRepository.save(notificationUser);
     }
+
+
 }

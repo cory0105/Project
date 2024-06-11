@@ -19,7 +19,7 @@ public class MessageController {
         this.messageService = messageService;
     }
     @PostMapping("createMessage")
-    public ResponseEntity<Message> createMessage(@RequestBody Message message){
+    public ResponseEntity<String> createMessage(@RequestBody Message message){
         return new ResponseEntity<>(messageService.createMessage(message), HttpStatus.OK);
     }
     @PostMapping("viewMessage")

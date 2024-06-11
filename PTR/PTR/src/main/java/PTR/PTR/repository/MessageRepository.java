@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message,Long> {
     List<Message> findByUserAndUser2(User user, User user2);
+    List<Message> findByUserAndUser2AndStatus(User user, User user2, Status status);
 }

@@ -1,5 +1,6 @@
 package PTR.PTR.controller;
 
+import PTR.PTR.model.Lecture;
 import PTR.PTR.model.LectureUser;
 import PTR.PTR.model.User;
 import PTR.PTR.service.LectureUserService;
@@ -25,5 +26,13 @@ public class LectureUserController {
     @PostMapping("myBuyLecture")
     public ResponseEntity<List<LectureUser>> myBuyLecture(@RequestBody User user){
         return new ResponseEntity<>(lectureUserService.myBuyLecture(user), HttpStatus.OK);
+    }
+    @PostMapping("buyNumber")
+    public ResponseEntity<Integer> buyNumber(@RequestBody Lecture lecture){
+        return new ResponseEntity<>(lectureUserService.buyNumber(lecture), HttpStatus.OK);
+    }
+    @PostMapping("changeLectureUser")
+    public ResponseEntity<LectureUser> changeLectureUser(@RequestBody LectureUser lectureUser){
+        return new ResponseEntity<>(lectureUserService.changeLectureUser(lectureUser), HttpStatus.OK);
     }
 }

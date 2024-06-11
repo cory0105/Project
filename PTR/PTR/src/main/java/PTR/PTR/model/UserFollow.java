@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name="feed_follow")
-public class FeedFollow {
+public class UserFollow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
