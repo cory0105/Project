@@ -3,6 +3,8 @@ package PTR.PTR.controller;
 import PTR.PTR.dto.LoginDto;
 import PTR.PTR.dto.SessionDto;
 import PTR.PTR.dto.SignupDto;
+import PTR.PTR.model.User;
+import PTR.PTR.model.UserCategory;
 import PTR.PTR.service.UserDetailService;
 import PTR.PTR.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,10 +17,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -33,11 +34,12 @@ public class UserController {
         this.authenticationManager = authenticationManager;
         this.httpServletRequest = httpServletRequest;
     }
+    // 회원가입
     @PostMapping("signup")
     public ResponseEntity<String> signup(@RequestBody SignupDto signupDto){
         return new ResponseEntity<>(userService.saveUser(signupDto), HttpStatus.CREATED);
     }
-
+    // 로그인
     @PostMapping("user/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpServletRequest request){
         Authentication authentication = authenticationManager.authenticate(
@@ -48,7 +50,7 @@ public class UserController {
         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
         return ResponseEntity.ok("Success");
     }
-
+    //로그아웃
     @PostMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
@@ -68,5 +70,20 @@ public class UserController {
         sessionDto.setUserId(authentication.getName());
         sessionDto.setAuthority(authentication.getAuthorities());
         return sessionDto;
+    }
+    // 유저 카테고리 수정 및 저장
+    @PostMapping("saveUserCategory")
+    public ResponseEntity<String> saveUserCategory(@RequestBody List<UserCategory> userCategories){
+        return new ResponseEntity<>(userService.saveUserCategory(userCategories), HttpStatus.OK);
+    }
+    // 유저 카테고리 삭제
+    @DeleteMapping("deleteUserCategory")
+    public ResponseEntity<String> deleteUserCategory(@RequestBody User user){
+        return new ResponseEntity<>(userService.deleteUserCategory(user), HttpStatus.OK);
+    }
+    // 유저 카테고리 조회
+    @GetMapping("findUserCategory")
+    public ResponseEntity<List<UserCategory>> findUserCategory(@RequestBody User user){
+        return new ResponseEntity<>(userService.findUserCategory(user), HttpStatus.OK);
     }
 }

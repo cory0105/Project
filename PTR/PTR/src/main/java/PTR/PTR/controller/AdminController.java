@@ -22,8 +22,8 @@ public class AdminController {
 
     @PostMapping("grantTeacher")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<String> grantTeacher(@RequestBody String userId){
-        return new ResponseEntity<>(adminService.grantTeacher(userId),
+    public ResponseEntity<String> grantTeacher(@RequestBody User user){
+        return new ResponseEntity<>(adminService.grantTeacher(user),
                 HttpStatus.OK);
 
     }

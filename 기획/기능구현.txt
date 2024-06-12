@@ -1,0 +1,71 @@
+- 생성 전 Authority에 ROLE_USER 저장
+- ROLE_ADMIN 회원가입 후 지정
+
+Admin
+ - grantTeacher : 선생님 권한 부여(1.userId)
+Authority
+Category
+ - saveCategory : 카테고리 추가(2.categoryName)
+Inquiry
+ - askInquiry : 1:1문의하기(1.title, 2.text, 3.{userId})
+InquiryReply
+Lecture
+LectureCategory
+LectureScrap
+LectureUser
+Message
+MessageBlock
+Notice
+Notification
+NotificationUser
+Status
+Subscription
+Teacher
+Training
+TrainingReview
+
+User
+ - signup : 회원가입(1.userId, 2.password, 3.userName, 4.userEmail, 5.birthday)
+ - user/login : 로그인(1.userId, 2.password)
+ - logout : 로그아웃
+ - current : 세션 관리
+ - saveUserCategory : 유저 카테고리 수정 및 저장([1.{userId}, 2.{categoryName}])
+ - deleteUserCategory : 유저 카테고리 삭제(1.userId)
+ - findUserCategory : 유저 카테고리 조회(1.userId)
+
+UserCategory
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

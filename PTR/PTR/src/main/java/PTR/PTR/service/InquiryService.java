@@ -21,7 +21,7 @@ public class InquiryService {
         inquiry.setCreatedAt(LocalDateTime.now());
         return inquiryRepository.save(inquiry);
     }
-    @PreAuthorize("hasAnyRole('ADMIN')")
+
     public List<Inquiry> findInquiry(){
         return inquiryRepository.findAll();
     }

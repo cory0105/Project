@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,9 +26,6 @@ public class Lecture {
     private Teacher teacher;
     @Column(name = "description")
     private String description;
-    @ManyToOne
-    @JoinColumn(name = "category")
-    private Category category;
     @Column(name = "url")
     private String url;
     @Column(name = "price")

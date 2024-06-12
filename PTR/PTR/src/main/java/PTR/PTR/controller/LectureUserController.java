@@ -35,4 +35,13 @@ public class LectureUserController {
     public ResponseEntity<LectureUser> changeLectureUser(@RequestBody LectureUser lectureUser){
         return new ResponseEntity<>(lectureUserService.changeLectureUser(lectureUser), HttpStatus.OK);
     }
+
+    @PostMapping("ratingAVG")
+    public ResponseEntity<Float> ratingAVG(@RequestBody Lecture lecture){
+        return new ResponseEntity<>(lectureUserService.ratingAVG(lecture), HttpStatus.OK);
+    }
+    @PostMapping("findByLecture")
+    public ResponseEntity<List<LectureUser>> findByLecture(@RequestBody Lecture lecture){
+        return new ResponseEntity<>(lectureUserService.findByLecture(lecture), HttpStatus.OK);
+    }
 }

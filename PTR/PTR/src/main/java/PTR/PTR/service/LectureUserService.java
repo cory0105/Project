@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LectureUserService {
@@ -50,5 +51,19 @@ public class LectureUserService {
 
     public LectureUser changeLectureUser(LectureUser lectureUser){
         return lectureUserRepository.save(lectureUser);
+    }
+
+    public float ratingAVG(Lecture lecture){
+        List<Integer> ratings = lectureUserRepository.findByLecture(lecture).stream().map(LectureUser::getTeacherRating)
+                .filter(teacherRating -> teacherRating >=0).toList();
+        float ratingAvg = 0;
+        for (int i=0; i<ratings.size(); i++){
+            ratingAvg = ratingAvg + ratings.get(i);
+        }
+        return ratingAvg / ratings.size();
+    }
+
+    public List<LectureUser> findByLecture(Lecture lecture){
+        return lectureUserRepository.findByLecture(lecture);
     }
 }

@@ -21,9 +21,12 @@ public class AdminService {
         this.userRepository = userRepository;
     }
 
-    public String grantTeacher(String userId){
+    public String grantTeacher(User user){
+        if (teacherRepository.findByUser(user)!=null){
+            return "이미 권한이 부여되었습니다.";
+        }
         Teacher teacher = new Teacher();
-        teacher.setUser(userRepository.findById(userId).get());
+        teacher.setUser(user);
         teacher.setPrice(0);
         teacherRepository.save(teacher);
         return teacher.getUser().getUserId();

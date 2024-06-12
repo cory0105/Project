@@ -38,9 +38,6 @@ public class User implements UserDetails {
     private String profileImg;
     @Column(name = "profile_text")
     private String profileText;
-    @ManyToOne
-    @JoinColumn(name = "category")
-    private Category category;
     @Column
     private int coin;
     @ManyToOne

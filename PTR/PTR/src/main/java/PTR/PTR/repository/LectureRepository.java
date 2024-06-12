@@ -9,5 +9,4 @@ import java.util.List;
 
 public interface LectureRepository extends JpaRepository<Lecture, Long> {
     List<Lecture> findByTeacher(Teacher teacher);
-    List<Lecture> findByCategory(Category category);
 }

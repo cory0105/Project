@@ -2,8 +2,10 @@
 
 admin의 grantTeacher 메서드는 text형식으로
 Feed 엔티티 수정
+User 엔티티 수정
 메시지 알람 안 함
 lecture를 만들때 teacher의 user정보도 줘야함
+category 다대다 수정
 
 수정
 - LectureUser scrapStatus 삭제
@@ -11,4 +13,96 @@ lecture를 만들때 teacher의 user정보도 줘야함
 	(레포지토리, 컨트롤러, 서비스)
 - Message status 추가
 - FeedFollow 이름 수정 UserFollow
+- Category*4 (repository*2 / model*2) 추가
+
+
+
+
+package PTR.PTR.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
+@Entity
+@Table(name="q_and_a")
+public class QAndA {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column
+    private String title;
+    @Column
+    private String text;
+
+}
+
+
+
+
+
+
+
+private long id;
+    @Column(name = "lecture_name")
+    private String lectureName;
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    private Teacher teacher;
+    @Column(name = "description")
+    private String description;
+    @ManyToMany
+    @JoinTable(name = "category")
+    private List<Category> category;
+    @Column(name = "url")
+    private String url;
+    @Column(name = "price")
+    private int price;
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

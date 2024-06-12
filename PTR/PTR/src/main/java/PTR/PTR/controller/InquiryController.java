@@ -19,8 +19,8 @@ public class InquiryController {
     public InquiryController(InquiryService inquiryService) {
         this.inquiryService = inquiryService;
     }
-
-    @PostMapping("askInquiry")
+    // 1:1 문의하기
+    @PostMapping("/askInquiry")
     public ResponseEntity<Inquiry> askInquiry(@RequestBody Inquiry inquiry){
         return new ResponseEntity<>(inquiryService.askInquiry(inquiry), HttpStatus.OK);
     }
