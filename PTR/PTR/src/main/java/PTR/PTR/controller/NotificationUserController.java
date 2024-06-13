@@ -19,19 +19,22 @@ public class NotificationUserController {
     public NotificationUserController(NotificationUserService notificationUserService) {
         this.notificationUserService = notificationUserService;
     }
-
+    // 유저 알람 확인
     @PostMapping("myNotification")
     public ResponseEntity<List<NotificationUser>> myNotification(@RequestBody User user){
         return new ResponseEntity<>(notificationUserService.myNotification(user), HttpStatus.OK);
     }
+    // 유저 알람 삭제
     @PostMapping("deleteNotification")
     public ResponseEntity<String> deleteNotification(@RequestBody NotificationUser notificationUser){
         return new ResponseEntity<>(notificationUserService.deleteNotification(notificationUser), HttpStatus.OK);
     }
+    // 유저 알람 확인(읽음 처리)
     @PostMapping("confirmNotification")
     public ResponseEntity<NotificationUser> confirmNotification(@RequestBody NotificationUser notificationUser){
         return new ResponseEntity<>(notificationUserService.confirmNotification(notificationUser), HttpStatus.OK);
     }
+    // 유저 알람 미확인(안 읽음 처리)
     @PostMapping("unconfirmedNotification")
     public ResponseEntity<NotificationUser> unconfirmedNotification(@RequestBody NotificationUser notificationUser){
         return new ResponseEntity<>(notificationUserService.unconfirmedNotification(notificationUser), HttpStatus.OK);

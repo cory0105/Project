@@ -64,4 +64,23 @@ public class UserService {
     public List<UserCategory> findUserCategory(User user){
         return userCategoryRepository.findByUser(user);
     }
+
+    // 유저 비밀번호 수정
+    public User changePassword(User user){
+        User changeUser = userRepository.findById(user.getUserId()).get();
+        changeUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        return userRepository.save(changeUser);
+    }
+    // 유저 프로필 이미지 수정
+    public User changeProfileImg(User user){
+        User changeUser = userRepository.findById(user.getUserId()).get();
+        changeUser.setProfileImg(user.getProfileImg());
+        return userRepository.save(changeUser);
+    }
+    // 유저 프로필 글 수정
+    public User changeProfileText(User user){
+        User changeUser = userRepository.findById(user.getUserId()).get();
+        changeUser.setProfileText(user.getProfileText());
+        return userRepository.save(changeUser);
+    }
 }

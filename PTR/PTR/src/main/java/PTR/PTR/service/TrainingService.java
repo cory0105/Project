@@ -46,7 +46,9 @@ public class TrainingService {
         trainingRepository.save(training);
         return "거절 상태";
     }
-
+    public List<Training> callAllStudents(Teacher teacher){
+        return trainingRepository.findByTeacher(teacher);
+    }
     public List<Training> callStudents(Teacher teacher){
         return trainingRepository.findByTeacherAndStatus(teacher,Status.UNCONFIRMED);
     }

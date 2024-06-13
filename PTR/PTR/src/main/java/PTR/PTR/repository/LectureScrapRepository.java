@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface LectureScrapRepository extends JpaRepository<LectureScrap, Long> {
     List<LectureScrap> findByUser(User user);
+    LectureScrap findByUserAndLecture(User user, Lecture lecture);
 }

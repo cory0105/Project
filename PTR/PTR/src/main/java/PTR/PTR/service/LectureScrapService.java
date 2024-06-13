@@ -17,9 +17,13 @@ public class LectureScrapService {
         this.lectureScrapRepository = lectureScrapRepository;
     }
 
-    public LectureScrap scrapLecture(LectureScrap lectureScrap){
-        lectureScrap.setCreatedAt(LocalDateTime.now());
-        return lectureScrapRepository.save(lectureScrap);
+    public String scrapLecture(LectureScrap lectureScrap){
+        if (null==lectureScrapRepository.findByUserAndLecture(lectureScrap.getUser(), lectureScrap.getLecture())){
+            lectureScrap.setCreatedAt(LocalDateTime.now());
+            lectureScrapRepository.save(lectureScrap);
+            return "스크랩 저장 완료";
+        }
+        return "이미 스크랩 되었습니다.";
     }
 
     public String deleteScrapLecture(LectureScrap lectureScrap){

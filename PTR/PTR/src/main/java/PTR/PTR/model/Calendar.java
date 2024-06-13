@@ -24,11 +24,11 @@ public class Calendar {
     @JoinColumn(name = "user_id")
     private User user;
     @Column
-    private int weightGoal;
+    private float weightGoal;
     @Column
-    private int weightRecord;
+    private float weightRecord;
     @Column
-    private int waterIntake;
+    private float waterIntake;
     @Column
     private String text;
 }

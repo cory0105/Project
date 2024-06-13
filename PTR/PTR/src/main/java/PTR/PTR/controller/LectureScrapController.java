@@ -20,14 +20,17 @@ public class LectureScrapController {
     public LectureScrapController(LectureScrapService lectureScrapService) {
         this.lectureScrapService = lectureScrapService;
     }
+    // 강의 스크랩하기
     @PostMapping("scrapLecture")
-    public ResponseEntity<LectureScrap> scrapLecture(@RequestBody LectureScrap lectureScrap){
+    public ResponseEntity<String> scrapLecture(@RequestBody LectureScrap lectureScrap){
         return new ResponseEntity<>(lectureScrapService.scrapLecture(lectureScrap), HttpStatus.OK);
     }
+    // 강의 스크랩 지우기
     @PostMapping("deleteScrapLecture")
     public ResponseEntity<String> deleteScrapLecture(@RequestBody LectureScrap lectureScrap){
         return new ResponseEntity<>(lectureScrapService.deleteScrapLecture(lectureScrap), HttpStatus.OK);
     }
+    // 유저가 스크랩한 강의 조회
     @PostMapping("myScrapLecture")
     public ResponseEntity<List<LectureScrap>> myScrapLecture(@RequestBody User user){
         return new ResponseEntity<>(lectureScrapService.myScrapLecture(user), HttpStatus.OK);

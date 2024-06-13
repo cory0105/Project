@@ -19,18 +19,22 @@ public class SubscriptionController {
     public SubscriptionController(SubscriptionService subscriptionService) {
         this.subscriptionService = subscriptionService;
     }
+    // 강사 구독
     @PostMapping("subscription")
     public ResponseEntity<String> subscription(@RequestBody Subscription subscription){
         return new ResponseEntity<>(subscriptionService.subscription(subscription), HttpStatus.OK);
     }
+    // 강사 구독 취소
     @PostMapping("subscriptionCansel")
     public ResponseEntity<String> subscriptionCansel(@RequestBody Subscription subscription){
         return new ResponseEntity<>(subscriptionService.subscriptionCansel(subscription), HttpStatus.OK);
     }
+    // 유저의 구독 목록
     @PostMapping("mySubscription")
     public ResponseEntity<List<Subscription>> mySubscription(@RequestBody User user){
         return new ResponseEntity<>(subscriptionService.mySubscription(user),HttpStatus.OK);
     }
+    // 강사의 구독자수
     @PostMapping("teacherSubscription")
     public ResponseEntity<Integer> teacherSubscription(@RequestBody Teacher teacher){
         return new ResponseEntity<>(subscriptionService.teacherSubscription(teacher), HttpStatus.OK);

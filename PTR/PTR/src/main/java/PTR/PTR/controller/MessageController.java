@@ -18,10 +18,12 @@ public class MessageController {
     public MessageController(MessageService messageService) {
         this.messageService = messageService;
     }
+    // 메시지 생성
     @PostMapping("createMessage")
     public ResponseEntity<String> createMessage(@RequestBody Message message){
         return new ResponseEntity<>(messageService.createMessage(message), HttpStatus.OK);
     }
+    // 메시지 보기
     @PostMapping("viewMessage")
     public ResponseEntity<List<Message>> viewMessage(@RequestBody List<User> users){
         User user = users.get(0);

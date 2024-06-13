@@ -22,11 +22,11 @@ public class LectureUserService {
     }
 
     public String buyLecture(LectureUser lectureUser){
+        lectureUser.setUser(userRepository.findById(lectureUser.getUser().getUserId()).get());
         lectureUser.setCreatedAt(LocalDateTime.now());
         lectureUser.setTeacherRating(-1);
         int price = lectureUser.getLecture().getPrice();
         int coin = lectureUser.getUser().getCoin();
-        lectureUser.setUser(userRepository.findById(lectureUser.getUser().getUserId()).get());
         if (coin >= price){
             if (null==lectureUserRepository.findByUserAndLecture(lectureUser.getUser(),lectureUser.getLecture())){
                 coin = coin - price;
@@ -63,7 +63,8 @@ public class LectureUserService {
         return ratingAvg / ratings.size();
     }
 
-    public List<LectureUser> findByLecture(Lecture lecture){
-        return lectureUserRepository.findByLecture(lecture);
+    public List<LectureUser> findReviewByLecture(Lecture lecture){
+        return lectureUserRepository.findByLecture(lecture).stream()
+                .filter(l->l.getTeacherReview()!=null).collect(Collectors.toList());
     }
 }

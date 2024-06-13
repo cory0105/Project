@@ -24,6 +24,9 @@ public class Notice {
     private String title;
     @Column
     private String text;
+    @ManyToOne
+    @JoinColumn
+    private Admin admin;
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 }

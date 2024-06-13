@@ -15,7 +15,8 @@ public class TeacherController {
     public TeacherController(TeacherService teacherService) {
         this.teacherService = teacherService;
     }
-    @PostMapping("/changeTeacher")
+    // 강사의 1:1훈련 가격 수정
+    @PostMapping("changeTeacherPrice")
     public ResponseEntity<Teacher> changeTeacherPrice(@RequestBody Teacher teacher){
         return new ResponseEntity<>(teacherService.changeTeacher(teacher), HttpStatus.OK);
     }

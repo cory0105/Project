@@ -7,23 +7,49 @@ Authority
 Category
  - saveCategory : 카테고리 추가(2.categoryName)
 Inquiry
- - askInquiry : 1:1문의하기(1.title, 2.text, 3.{userId})
+ - askInquiry(500) : 1:1문의하기(1.title, 2.text, 3.{userId})
+ - findInquiry : 모든 1:1 문의 조회
+ - myInquiry : 유저의 1:1문의찾기(1.userId)
 InquiryReply
+ - replyInquiry(500) : 1:1문의 답변 달기(1.inquiryid, 2.text, 3. adminid)
+ - findInquiryReply : 1:1문의로 답변 조회(1.inquiryid)
 Lecture
-LectureCategory
+ - createLecture(500) : 강의 생성(1.lectureName, 2.{teacher}, 3.description, 4.url, 5.price)
+ - findTeacherLecture : 강사의 강의 조회(1.teacherid)
+ - searchLecture : 강의 검색(string)
+ - findPriceLecture : 가격으로 강의 조회([min가격, max가격]
+ - saveLectureCategory : 강의 카테고리 수정 및 저장([1.{lectureid}, 2.{categoryName}])
+ - deleteLecturerCategory : 강의 카테고리 삭제(1.lectureid)
+ - findLectureCategory : 강의의 카테고리 조회(1.lectureid)
+ - findLectureByCategory : 카테고리로 강의 찾기(1.categoryName)
 LectureScrap
+ - scrapLecture(500) : 강의 스크랩하기(1.userId, 2.lectureid)
+ - deleteScrapLecture : 강의 스크랩 지우기(1.lecturescrapid)
+ - myScrapLecture : 유저가 스크랩한 강의 조회(1.userId)
 LectureUser
+ - buyLecture : 강의 구매(1.lecture, 2.user *price랑 coin 정보도 줘야함)
+ - changeLectureUser : 강의의 별점 및 리뷰 재작성(LectureUser 객체의 모든 정보를 줘야함)
+ - ratingAVG : 별점 평균(1.lectureid)
+ - findReviewByLecture : 강의의 리뷰 및 별점 조회(1.lectureid)
 Message
+ - 
 MessageBlock
+ - 
 Notice
+ - createNotice : 공지사항 생성(1.title, 2.text, 3.adminid)
+ - searchNotice : 공지사항 검색(string)
 Notification
+ - 
 NotificationUser
-Status
+ - 
 Subscription
+ - 
 Teacher
+ - 
 Training
+ - 
 TrainingReview
-
+ - 
 User
  - signup : 회원가입(1.userId, 2.password, 3.userName, 4.userEmail, 5.birthday)
  - user/login : 로그인(1.userId, 2.password)
@@ -32,40 +58,6 @@ User
  - saveUserCategory : 유저 카테고리 수정 및 저장([1.{userId}, 2.{categoryName}])
  - deleteUserCategory : 유저 카테고리 삭제(1.userId)
  - findUserCategory : 유저 카테고리 조회(1.userId)
-
-UserCategory
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ - changePassword : 유저 비밀번호 수정(1.userId, 2.password)
+ - changeProfileImg : 유저 프로필 이미지 수정(1.userId, 2.profileImg)
+ - changeProfileText : 유저 프로필 글 수정(1.userId, 2.profileText)

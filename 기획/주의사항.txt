@@ -14,7 +14,7 @@ category 다대다 수정
 - Message status 추가
 - FeedFollow 이름 수정 UserFollow
 - Category*4 (repository*2 / model*2) 추가
-
+- Notice 엔티티에 admin 추가
 
 
 

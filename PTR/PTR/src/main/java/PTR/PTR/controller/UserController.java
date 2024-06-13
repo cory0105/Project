@@ -86,4 +86,19 @@ public class UserController {
     public ResponseEntity<List<UserCategory>> findUserCategory(@RequestBody User user){
         return new ResponseEntity<>(userService.findUserCategory(user), HttpStatus.OK);
     }
+    // 유저 비밀번호 수정
+    @PostMapping("changePassword")
+    public ResponseEntity<User> changePassword(@RequestBody User user){
+        return new ResponseEntity<>(userService.changePassword(user), HttpStatus.OK);
+    }
+    // 유저 프로필 이미지 수정
+    @PostMapping("changeProfileImg")
+    public ResponseEntity<User> changeProfileImg(@RequestBody User user){
+        return new ResponseEntity<>(userService.changeProfileImg(user), HttpStatus.OK);
+    }
+    // 유저 프로필 글 수정
+    @PostMapping("changeProfileText")
+    public ResponseEntity<User> changeProfileText(@RequestBody User user){
+        return new ResponseEntity<>(userService.changeProfileText(user), HttpStatus.OK);
+    }
 }
