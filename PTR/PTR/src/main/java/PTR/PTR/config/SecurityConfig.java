@@ -32,12 +32,12 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/user/login"), // user/* => user의 자식만 || user/** => user의 자식의 자식까지 모두
                                 new AntPathRequestMatcher("/user/signup"),
                                 new AntPathRequestMatcher("/signup"),
-                                new AntPathRequestMatcher("/login"),
+                                new AntPathRequestMatcher("/ptr/**"),
                                 new AntPathRequestMatcher("/css/**"),
                                 new AntPathRequestMatcher("/js/**")
                         ).permitAll()
                         .anyRequest().authenticated()) // 모든 요청에 인증을 받음
-                .formLogin(form->form.loginPage("/login").defaultSuccessUrl("/articles")) // formLogin : 정적 로그인 페이지가 존재하는 경우 사용 , defaultSuccessUrl : 로그인 성공시 /articles로  로그인 페이지를 직접 만들기 위함
+                 // formLogin : 정적 로그인 페이지가 존재하는 경우 사용 , defaultSuccessUrl : 로그인 성공시 /articles로  로그인 페이지를 직접 만들기 위함
                 .sessionManagement(session -> session // session 관리 시 필요
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .csrf(AbstractHttpConfigurer::disable) // 더 좋은 보안을 사용할 거라 csrf(다른 사이트의 접속을 차단함/피싱을 막기 위함)를 안 씀
