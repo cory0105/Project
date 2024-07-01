@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -43,5 +44,8 @@ public class CalendarDietRecordController {
         return new ResponseEntity<>(calendarDietRecordService.findCalendarDietRecordByCalendar(calendar), HttpStatus.OK);
     }
 
-
+    @PostMapping("/findCalendarDietRecordByCalendars")
+    public ResponseEntity<List<CalendarDietRecord>> findCalendarDietRecordByCalendars(@RequestBody List<Calendar> calendar){
+        return new ResponseEntity<>(calendarDietRecordService.findCalendarDietRecordByCalendars(calendar), HttpStatus.OK);
+    }
 }

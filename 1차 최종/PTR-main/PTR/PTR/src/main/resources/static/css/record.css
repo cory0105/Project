@@ -88,6 +88,8 @@
 .content_stat_body canvas {
   width: 100%;
   height: 300px;
+  margin-top: 30px;
+  padding: 20px;
 }
 .divider {
   width: 100%;

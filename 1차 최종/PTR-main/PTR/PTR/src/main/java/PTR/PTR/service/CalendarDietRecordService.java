@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -51,5 +52,9 @@ public class CalendarDietRecordService {
 
     public CalendarDietRecord findCalendarDietRecordByCalendar(Calendar calendar){
         return calendarDietRecordRepository.findByCalendar(calendar);
+    }
+
+    public List<CalendarDietRecord> findCalendarDietRecordByCalendars(List<Calendar> calendar){
+        return calendarDietRecordRepository.findAllByCalendarIn(calendar);
     }
 }

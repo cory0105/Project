@@ -6,6 +6,7 @@ import PTR.PTR.model.CalendarDietPlan;
 import PTR.PTR.repository.CalendarDietPlanRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,5 +50,9 @@ public class CalendarDietPlanService {
 
     public CalendarDietPlan findCalendarDietPlanByCalendar(Calendar calendar){
         return calendarDietPlanRepository.findByCalendar(calendar);
+    }
+
+    public List<CalendarDietPlan> findCalendarDietPlanByCalendars(List<Calendar> calendar){
+        return calendarDietPlanRepository.findAllByCalendarIn(calendar);
     }
 }

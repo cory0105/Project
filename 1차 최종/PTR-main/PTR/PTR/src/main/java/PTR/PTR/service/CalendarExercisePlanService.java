@@ -6,6 +6,7 @@ import PTR.PTR.model.CalendarExercisePlan;
 import PTR.PTR.repository.CalendarExercisePlanRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,5 +51,8 @@ public class CalendarExercisePlanService {
 
     public CalendarExercisePlan findCalendarExercisePlanByCalendar(Calendar calendar){
         return calendarExercisePlanRepository.findByCalendar(calendar);
+    }
+    public List<CalendarExercisePlan> findCalendarExercisePlanByCalendars(List<Calendar> calendar){
+        return calendarExercisePlanRepository.findAllByCalendarIn(calendar);
     }
 }

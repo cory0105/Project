@@ -115,11 +115,55 @@ function createChartDate(){
   .then((response)=>{
     console.log("이번달 캘린더 정보: ", response.data)
     createChartWeight(response.data)
+
+    // 칼로리 차트
+    axios
+    .post("http://localhost:8080/findCalendarDietPlanByCalendars", response.data)
+    .then((calendarDietPlan)=>{
+      console.log("calendarDietPlan: ", calendarDietPlan.data)
+      axios
+      .post("http://localhost:8080/findCalendarDietRecordByCalendars", response.data)
+      .then((calendarDietRecord)=>{
+        console.log("이번달 캘린더 정보: ", calendarDietRecord.data)
+        createChartDiet(calendarDietPlan.data, calendarDietRecord.data)
+      })
+      .catch((error)=>{
+        console.log("에러: ", error)
+      })      
+    })
+    .catch((error)=>{
+      console.log("에러: ", error)
+    })    
+
+    // 운동 차트
+    axios
+    .post("http://localhost:8080/findCalendarExercisePlanByCalendars", response.data)
+    .then((calendarExercisePlan)=>{
+      console.log("calendarExercisePlan ", calendarExercisePlan.data)
+      axios
+      .post("http://localhost:8080/findCalendarExerciseRecordByCalendars", response.data)
+      .then((calendarExerciseRecord)=>{
+        console.log("이번달 캘린더 정보: ", calendarExerciseRecord.data)
+        createChartExercise(calendarExercisePlan.data, calendarExerciseRecord.data)
+      })
+      .catch((error)=>{
+        console.log("에러: ", error)
+      })      
+    })
+    .catch((error)=>{
+      console.log("에러: ", error)
+    })
+
+
   })
   .catch((error)=>{
     console.log("에러: ", error)
   })
 }
+
+let myBarChartWeight = null; // 전역 변수로 차트를 저장할 변수 선언
+let myBarChartDiet = null;
+let myBarChartExercise = null;
 
 function createChartWeight(calendar){
   const lastDate = new Date(currentYear, currentMonth, 0).getDate();
@@ -144,65 +188,42 @@ function createChartWeight(calendar){
 
   calendar.forEach((calendar)=>{
     if(calendar.weightGoal !== -1){
-      const index = calendar.date.getDate()-1
-      // weightGoals[index] 여기부터 작성
+      const date = new Date(calendar.date);
+      const index = date.getDate() -1
+      weightGoals[index] = calendar.weightGoal;
+      if(calendar.weightGoal<minY){
+        minY = calendar.weightGoal
+      }
+      if(calendar.weightGoal>maxY){
+        maxY = calendar.weightGoal
+      }
+    }
+    if(calendar.weightRecord !== -1){
+      const date = new Date(calendar.date);
+      const index = date.getDate() -1
+      weightRecords[index] = calendar.weightRecord;
+      if(calendar.weightRecord<minY){
+        minY = calendar.weightRecord
+      }
+      if(calendar.weightRecord>maxY){
+        maxY = calendar.weightRecord
+      }
     }
   })
-
-
-
-
-
-  for (let i = 0; i < lastDate; i++) {
-    if (data[i] && data[i].weightGoal !== -1) {
-      const goal = data[i].weightGoal;
-      weightData.datasets[0].data.unshift(goal); // 최신 데이터부터 역순으로 목표 몸무게 추가
-      minY = Math.min(minY, Math.floor(goal));
-      maxY = Math.max(maxY, Math.floor(goal));
-    } else {
-      weightData.datasets[0].data.unshift(null);
-    }
-
-    if (data[i] && data[i].weightRecord !== -1) {
-      const record = data[i].weightRecord;
-      weightData.datasets[1].data.unshift(record); // 최신 데이터부터 역순으로 달성 몸무게 추가
-      minY = Math.min(minY, Math.floor(record));
-      maxY = Math.max(maxY, Math.floor(record));
-    } else {
-      weightData.datasets[1].data.unshift(null);
-    }
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   const weightData = {
     labels: days,
     datasets: [
       {
         label: '목표 몸무게(kg)',
-        data: [4, 3, 2, 1], // 예시 데이터, 실제 데이터에 맞게 수정 필요
+        data: weightGoals,
         fill: false,
         borderColor: 'rgb(254, 192, 9)',
         tension: 0
       },
       {
         label: '달성 몸무게(kg)',
-        data: [3, 2, 4, 1, 2], // 예시 데이터, 실제 데이터에 맞게 수정 필요
+        data: weightRecords,
         fill: false,
         borderColor: 'rgb(44, 57, 74)',
         tension: 0
@@ -210,18 +231,319 @@ function createChartWeight(calendar){
     ]
   };
   
+  // 기존 차트가 있으면 파괴
+  if (myBarChartWeight) {
+    myBarChartWeight.destroy();
+  }
+
   const barChartweight = document.getElementById("barChartweight").getContext("2d");
-  new Chart(barChartweight, {
+  myBarChartWeight = new Chart(barChartweight, {
     type: 'line',
     data: weightData,
     options: {
       scales: {
         y: {
           beginAtZero: false, // Y축이 0부터 시작하지 않도록 설정
-          // min: minY,
-          // max: maxY,
+          min: minY -1,
+          max: maxY +1,
           ticks: {
-              stepSize: 0.5 // Y축 눈금 간격을 10으로 설정
+            stepSize: 0.5 // Y축 눈금 간격 설정
+          }  
+        }
+      }
+    }
+  });
+
+
+
+
+
+
+  // new Chart(barChartweight, {
+  //   type: "line",
+  //   data: {
+  //     labels: days,
+  //     datasets: [
+  //       {
+  //         label: "섭취량",
+  //         data: [7, 8, 9, 10],
+  //         backgroundColor: "rgba(254, 192, 9, 1)", // 막대 색상을 불투명하게 설정
+  //         borderColor: "rgba(254, 192, 9, 1)",
+  //         borderWidth: 1,
+  //         pointRadius: 0,
+  //         pointHoverRadius: 0,
+  //       },
+  //     ],
+  //   },
+  //   options: {
+  //     responsive: true,
+  //     maintainAspectRatio: false,
+  //     scales: {
+  //       y: {
+  //         beginAtZero: true,
+  //         min: 0,
+  //         max: 1000,
+  //         stepSize: 20,
+  //         grid: {
+  //           display: false, // y축의 그리드를 표시하지 않음
+  //         },
+  //         ticks: {
+  //           display: false, // y축의 숫자를 표시하지 않음
+  //           callback: function (value) {
+  //             return value + "kcal";
+  //           },
+  //         },
+  //       },
+  //       x: {
+  //         grid: {
+  //           display: false, // x축의 그리드를 표시하지 않음
+  //         },
+  //         ticks: {
+  //           display: true, // x축의 숫자를 표시하지 않음
+  //         },
+  //       },
+  //     },
+  //     plugins: {
+  //       legend: {
+  //         display: false, // 범례를 표시하지 않음
+  //       },
+  //     },
+  //   },
+  // });
+}
+
+function createChartDiet(dietPlans, dietRecords){
+  console.log("캘린더", calendar)
+  const lastDate = new Date(currentYear, currentMonth, 0).getDate();
+  let days = [];
+  for(let i=1; i<=lastDate; i++){
+    days.push(`${i}일`)
+  }
+  console.log(days)
+
+
+  let minY = 1000;
+  let maxY = 0;
+
+  let weightGoals = [];
+  let weightRecords = [];
+
+
+  for (let i = 0; i < lastDate; i++) {
+    weightGoals.push(null)
+    weightRecords.push(null)
+  }
+
+  calendar.forEach((calendar)=>{
+    if(calendar.weightGoal !== -1){
+      const date = new Date(calendar.date);
+      const index = date.getDate() -1
+      weightGoals[index] = calendar.weightGoal;
+      if(calendar.weightGoal<minY){
+        minY = calendar.weightGoal
+      }
+      if(calendar.weightGoal>maxY){
+        maxY = calendar.weightGoal
+      }
+    }
+    if(calendar.weightRecord !== -1){
+      const date = new Date(calendar.date);
+      const index = date.getDate() -1
+      weightRecords[index] = calendar.weightRecord;
+      if(calendar.weightRecord<minY){
+        minY = calendar.weightRecord
+      }
+      if(calendar.weightRecord>maxY){
+        maxY = calendar.weightRecord
+      }
+    }
+  })
+
+  const weightData = {
+    labels: days,
+    datasets: [
+      {
+        label: '목표 몸무게(kg)',
+        data: weightGoals,
+        fill: false,
+        borderColor: 'rgb(254, 192, 9)',
+        tension: 0
+      },
+      {
+        label: '달성 몸무게(kg)',
+        data: weightRecords,
+        fill: false,
+        borderColor: 'rgb(44, 57, 74)',
+        tension: 0
+      }
+    ]
+  };
+  
+  // 기존 차트가 있으면 파괴
+  if (myBarChartWeight) {
+    myBarChartWeight.destroy();
+  }
+
+  const barChartweight = document.getElementById("barChartweight").getContext("2d");
+  myBarChartWeight = new Chart(barChartweight, {
+    type: 'line',
+    data: weightData,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: false, // Y축이 0부터 시작하지 않도록 설정
+          min: minY -1,
+          max: maxY +1,
+          ticks: {
+            stepSize: 0.5 // Y축 눈금 간격 설정
+          }  
+        }
+      }
+    }
+  });
+
+
+
+
+
+
+  // new Chart(barChartweight, {
+  //   type: "line",
+  //   data: {
+  //     labels: days,
+  //     datasets: [
+  //       {
+  //         label: "섭취량",
+  //         data: [7, 8, 9, 10],
+  //         backgroundColor: "rgba(254, 192, 9, 1)", // 막대 색상을 불투명하게 설정
+  //         borderColor: "rgba(254, 192, 9, 1)",
+  //         borderWidth: 1,
+  //         pointRadius: 0,
+  //         pointHoverRadius: 0,
+  //       },
+  //     ],
+  //   },
+  //   options: {
+  //     responsive: true,
+  //     maintainAspectRatio: false,
+  //     scales: {
+  //       y: {
+  //         beginAtZero: true,
+  //         min: 0,
+  //         max: 1000,
+  //         stepSize: 20,
+  //         grid: {
+  //           display: false, // y축의 그리드를 표시하지 않음
+  //         },
+  //         ticks: {
+  //           display: false, // y축의 숫자를 표시하지 않음
+  //           callback: function (value) {
+  //             return value + "kcal";
+  //           },
+  //         },
+  //       },
+  //       x: {
+  //         grid: {
+  //           display: false, // x축의 그리드를 표시하지 않음
+  //         },
+  //         ticks: {
+  //           display: true, // x축의 숫자를 표시하지 않음
+  //         },
+  //       },
+  //     },
+  //     plugins: {
+  //       legend: {
+  //         display: false, // 범례를 표시하지 않음
+  //       },
+  //     },
+  //   },
+  // });
+}
+
+function createChartExercise(exercisePlans, exerciseRecords){
+  console.log("캘린더", calendar)
+  const lastDate = new Date(currentYear, currentMonth, 0).getDate();
+  let days = [];
+  for(let i=1; i<=lastDate; i++){
+    days.push(`${i}일`)
+  }
+  console.log(days)
+
+
+  let minY = 1000;
+  let maxY = 0;
+
+  let weightGoals = [];
+  let weightRecords = [];
+
+
+  for (let i = 0; i < lastDate; i++) {
+    weightGoals.push(null)
+    weightRecords.push(null)
+  }
+
+  calendar.forEach((calendar)=>{
+    if(calendar.weightGoal !== -1){
+      const date = new Date(calendar.date);
+      const index = date.getDate() -1
+      weightGoals[index] = calendar.weightGoal;
+      if(calendar.weightGoal<minY){
+        minY = calendar.weightGoal
+      }
+      if(calendar.weightGoal>maxY){
+        maxY = calendar.weightGoal
+      }
+    }
+    if(calendar.weightRecord !== -1){
+      const date = new Date(calendar.date);
+      const index = date.getDate() -1
+      weightRecords[index] = calendar.weightRecord;
+      if(calendar.weightRecord<minY){
+        minY = calendar.weightRecord
+      }
+      if(calendar.weightRecord>maxY){
+        maxY = calendar.weightRecord
+      }
+    }
+  })
+
+  const weightData = {
+    labels: days,
+    datasets: [
+      {
+        label: '목표 몸무게(kg)',
+        data: weightGoals,
+        fill: false,
+        borderColor: 'rgb(254, 192, 9)',
+        tension: 0
+      },
+      {
+        label: '달성 몸무게(kg)',
+        data: weightRecords,
+        fill: false,
+        borderColor: 'rgb(44, 57, 74)',
+        tension: 0
+      }
+    ]
+  };
+  
+  // 기존 차트가 있으면 파괴
+  if (myBarChartWeight) {
+    myBarChartWeight.destroy();
+  }
+
+  const barChartweight = document.getElementById("barChartweight").getContext("2d");
+  myBarChartWeight = new Chart(barChartweight, {
+    type: 'line',
+    data: weightData,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: false, // Y축이 0부터 시작하지 않도록 설정
+          min: minY -1,
+          max: maxY +1,
+          ticks: {
+            stepSize: 0.5 // Y축 눈금 간격 설정
           }  
         }
       }
@@ -291,61 +613,6 @@ function createChartWeight(calendar){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // document.addEventListener("DOMContentLoaded", function () {
   
 
@@ -385,114 +652,114 @@ function createChartWeight(calendar){
   }
 
   // Chart.js 섭취량 막대 그래프 생성
-  const barCtxIntake = document.getElementById("barChartIntake").getContext("2d");
-  new Chart(barCtxIntake, {
-    type: "bar",
-    data: {
-      labels: ["1주", "2주", "3주", "4주", "5주"],
-      datasets: [
-        {
-          label: "섭취량",
-          data: [],
-          backgroundColor: "rgba(254, 192, 9, 1)", // 막대 색상을 불투명하게 설정
-          borderColor: "rgba(254, 192, 9, 1)",
-          borderWidth: 1,
-          pointRadius: 0,
-          pointHoverRadius: 0,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true,
-          min: 0,
-          max: 1000,
-          stepSize: 20,
-          grid: {
-            display: false, // y축의 그리드를 표시하지 않음
-          },
-          ticks: {
-            display: false, // y축의 숫자를 표시하지 않음
-            callback: function (value) {
-              return value + "kcal";
-            },
-          },
-        },
-        x: {
-          grid: {
-            display: false, // x축의 그리드를 표시하지 않음
-          },
-          ticks: {
-            display: true, // x축의 숫자를 표시하지 않음
-          },
-        },
-      },
-      plugins: {
-        legend: {
-          display: false, // 범례를 표시하지 않음
-        },
-      },
-    },
-  });
+  // const barCtxIntake = document.getElementById("barChartIntake").getContext("2d");
+  // new Chart(barCtxIntake, {
+  //   type: "bar",
+  //   data: {
+  //     labels: ["1주", "2주", "3주", "4주", "5주"],
+  //     datasets: [
+  //       {
+  //         label: "섭취량",
+  //         data: [],
+  //         backgroundColor: "rgba(254, 192, 9, 1)", // 막대 색상을 불투명하게 설정
+  //         borderColor: "rgba(254, 192, 9, 1)",
+  //         borderWidth: 1,
+  //         pointRadius: 0,
+  //         pointHoverRadius: 0,
+  //       },
+  //     ],
+  //   },
+  //   options: {
+  //     responsive: true,
+  //     maintainAspectRatio: false,
+  //     scales: {
+  //       y: {
+  //         beginAtZero: true,
+  //         min: 0,
+  //         max: 1000,
+  //         stepSize: 20,
+  //         grid: {
+  //           display: false, // y축의 그리드를 표시하지 않음
+  //         },
+  //         ticks: {
+  //           display: false, // y축의 숫자를 표시하지 않음
+  //           callback: function (value) {
+  //             return value + "kcal";
+  //           },
+  //         },
+  //       },
+  //       x: {
+  //         grid: {
+  //           display: false, // x축의 그리드를 표시하지 않음
+  //         },
+  //         ticks: {
+  //           display: true, // x축의 숫자를 표시하지 않음
+  //         },
+  //       },
+  //     },
+  //     plugins: {
+  //       legend: {
+  //         display: false, // 범례를 표시하지 않음
+  //       },
+  //     },
+  //   },
+  // });
 
-  // Chart.js 운동량 막대 그래프 생성
-  const barCtxExercise = document
-    .getElementById("barChartExercise")
-    .getContext("2d");
-  new Chart(barCtxExercise, {
-    type: "bar",
-    data: {
-      labels: ["1주", "2주", "3주", "4주", "5주"],
-      datasets: [
-        {
-          label: "운동량",
-          data: [],
-          backgroundColor: "rgba(75, 192, 192, 1)", // 막대 색상을 불투명하게 설정
-          borderColor: "rgba(75, 192, 192, 1)",
-          borderWidth: 1,
-          pointRadius: 0,
-          pointHoverRadius: 0,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true,
-          min: 0,
-          max: 1000,
-          stepSize: 20,
-          grid: {
-            display: false, // y축의 그리드를 표시하지 않음
-          },
-          ticks: {
-            display: false, // y축의 숫자를 표시하지 않음
-            callback: function (value) {
-              return value + "kcal";
-            },
-          },
-        },
-        x: {
-          grid: {
-            display: false, // x축의 그리드를 표시하지 않음
-          },
-          ticks: {
-            display: true, // x축의 숫자를 표시하지 않음
-          },
-        },
-      },
-      plugins: {
-        legend: {
-          display: false, // 범례를 표시하지 않음
-        },
-      },
-    },
-  });
+  // // Chart.js 운동량 막대 그래프 생성
+  // const barCtxExercise = document
+  //   .getElementById("barChartExercise")
+  //   .getContext("2d");
+  // new Chart(barCtxExercise, {
+  //   type: "bar",
+  //   data: {
+  //     labels: ["1주", "2주", "3주", "4주", "5주"],
+  //     datasets: [
+  //       {
+  //         label: "운동량",
+  //         data: [],
+  //         backgroundColor: "rgba(75, 192, 192, 1)", // 막대 색상을 불투명하게 설정
+  //         borderColor: "rgba(75, 192, 192, 1)",
+  //         borderWidth: 1,
+  //         pointRadius: 0,
+  //         pointHoverRadius: 0,
+  //       },
+  //     ],
+  //   },
+  //   options: {
+  //     responsive: true,
+  //     maintainAspectRatio: false,
+  //     scales: {
+  //       y: {
+  //         beginAtZero: true,
+  //         min: 0,
+  //         max: 1000,
+  //         stepSize: 20,
+  //         grid: {
+  //           display: false, // y축의 그리드를 표시하지 않음
+  //         },
+  //         ticks: {
+  //           display: false, // y축의 숫자를 표시하지 않음
+  //           callback: function (value) {
+  //             return value + "kcal";
+  //           },
+  //         },
+  //       },
+  //       x: {
+  //         grid: {
+  //           display: false, // x축의 그리드를 표시하지 않음
+  //         },
+  //         ticks: {
+  //           display: true, // x축의 숫자를 표시하지 않음
+  //         },
+  //       },
+  //     },
+  //     plugins: {
+  //       legend: {
+  //         display: false, // 범례를 표시하지 않음
+  //       },
+  //     },
+  //   },
+  // });
 // });
 
 

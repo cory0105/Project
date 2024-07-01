@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -41,5 +42,9 @@ public class CalendarExerciseRecordController {
     @PostMapping("/findCalendarExerciseRecordByCalendar")
     public ResponseEntity<CalendarExerciseRecord> findCalendarExerciseRecordByCalendar(@RequestBody Calendar calendar){
         return new ResponseEntity<>(calendarExerciseRecordService.findCalendarExerciseRecordByCalendar(calendar), HttpStatus.OK);
+    }
+    @PostMapping("/findCalendarExerciseRecordByCalendars")
+    public ResponseEntity<List<CalendarExerciseRecord>> findCalendarExerciseRecordByCalendars(@RequestBody List<Calendar> calendar){
+        return new ResponseEntity<>(calendarExerciseRecordService.findCalendarExerciseRecordByCalendars(calendar), HttpStatus.OK);
     }
 }
